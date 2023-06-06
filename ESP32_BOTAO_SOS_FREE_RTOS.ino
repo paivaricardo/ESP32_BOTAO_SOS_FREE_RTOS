@@ -1,9 +1,8 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
+#include "WiFiCredentials.h"
 
 // WiFi
-const char* SSID = "";
-const char* PASSWORD = "";
 WiFiClient wifiClient;
 
 // MQTT Server
@@ -47,7 +46,7 @@ void setup() {
 
   initMillis = millis();
 
-  // Create MQTT task
+  // Create MQTT task - FreeRTOS
   xTaskCreatePinnedToCore(mqttTask, "mqttTask", 4096, NULL, 1, &mqttTaskHandle, 1);
 }
 
