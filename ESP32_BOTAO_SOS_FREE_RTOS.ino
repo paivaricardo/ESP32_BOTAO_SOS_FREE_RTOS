@@ -28,6 +28,7 @@ bool sosAtivo = false;
 
 // Function declarations
 void mqttTask(void* parameter);
+void buttonTask(void* parameter);
 void subscribeSOSTopicMQTT();
 void callbackLidarComMensagensMQTT(char* topic, byte* message, unsigned int length);
 void lerBotaoSOS();
@@ -47,7 +48,10 @@ void setup() {
   initMillis = millis();
 
   // Create MQTT task - FreeRTOS
-  xTaskCreatePinnedToCore(mqttTask, "mqttTask", 4096, NULL, 1, &mqttTaskHandle, 1);
+  xTaskCreatePinnedToCore(mqttTask, "mqttTask", 4096, NULL, 1, &mqttTaskHandle, 0);
+
+  // Create button task - FreeRTOS
+  xTaskCreatePinnedToCore(buttonTask, "buttonTask", 4096, NULL, 1, NULL, 1);
 }
 
 void loop() {
@@ -61,7 +65,6 @@ void mqttTask(void* parameter) {
     }
 
     MQTT.loop();
-    lerBotaoSOS();
     vTaskDelay(10 / portTICK_PERIOD_MS);
   }
 }
@@ -123,6 +126,14 @@ void callbackLidarComMensagensMQTT(char* topic, byte* message, unsigned int leng
   }
 
   digitalWrite(pinoDigitalAcionamentoLED, sosAtivo);
+}
+
+// Tarefa de ler os inputs do botão
+void buttonTask(void* parameter) {
+  while (true) {
+    lerBotaoSOS();
+    vTaskDelay(10 / portTICK_PERIOD_MS);
+  }
 }
 
 void lerBotaoSOS() {
