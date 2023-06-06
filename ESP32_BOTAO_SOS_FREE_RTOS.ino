@@ -2,8 +2,8 @@
 #include <PubSubClient.h>
 
 // WiFi
-const char* SSID = "BRAVAFIBRA - cafofo_nw";
-const char* PASSWORD = "9v2H5NWe";
+const char* SSID = "";
+const char* PASSWORD = "";
 WiFiClient wifiClient;
 
 // MQTT Server
