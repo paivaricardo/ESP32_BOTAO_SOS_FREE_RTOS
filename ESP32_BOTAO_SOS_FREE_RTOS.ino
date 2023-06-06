@@ -1,14 +1,12 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include "WiFiCredentials.h"
+#include "MQTTCredentials.h"
 
 // WiFi
 WiFiClient wifiClient;
 
 // MQTT Server
-const char* BROKER_MQTT = "test.mosquitto.org";
-int BROKER_PORT = 1883;
-
 #define ID_MQTT "ESP32NODEMCU2"
 #define TOPIC_PUBLISH "sos_acionado"
 PubSubClient MQTT(wifiClient);
